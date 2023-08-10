@@ -60,7 +60,7 @@ def write_data_into_excel(xlspath, data_json_list, sheet_name='Sheet1'):
     data = pd.DataFrame(data)
     # data = data[sheetnames_zh]  # 将data按sheetnames_zh顺序排列
     # data = data[sheetnames_origin]  # 将data按sheetnames_zh顺序排列
-    data.to_excel(writer, sheet_name=sheet_name, index=False)
+    data.to_excel(writer, sheet_name=sheet_name, index=False)  # openpyxl.utils.exceptions.IllegalCharacterError错误保留,待解决
 
     # # 计算每列表头的字符宽度
     # column_widths = (data.columns.to_series().apply(lambda x: len(str(x).encode('gbk'))).values)

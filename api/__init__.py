@@ -1,5 +1,6 @@
 import requests
 import json
+import time
 from urllib.parse import quote
 from xlsx import write_data_into_excel
 
@@ -36,7 +37,7 @@ class BossApi:
 
     def search_job_by_keyword(self, keyword):
         """根据关键词搜索职位"""
-        api_url = f'http://{self.host}/wapi/zpgeek/miniapp/search/joblist.json?pageSize=15&query={quote(keyword)}&city=101280600&source=1&sortType=0&subwayLineId=&subwayStationId=&districtCode=&businessCode=&longitude=&latitude=&position=&expectId=&expectPosition=&page=1&appId=10002'
+        api_url = f'http://{self.host}/wapi/zpgeek/miniapp/search/joblist.json?pageSize=50&query={quote(keyword)}&city=101280600&source=1&sortType=0&subwayLineId=&subwayStationId=&districtCode=&businessCode=&longitude=&latitude=&position=&expectId=&expectPosition=&page=1&appId=10002'
         temp_ua = {"model": "iPhone SE (2nd generation)<iPhone12,8>", "platform": "ios"}
         headers = {
             'content-type': 'application/x-www-form-urlencoded',
@@ -221,7 +222,7 @@ class BossApi:
             # break
         # print(ret_jobinfos)
         # quit()
-        write_data_into_excel(xlspath='boss_target_jobinfos_20230811.xlsx', data_json_list=ret_jobinfos)
+        write_data_into_excel(xlspath=str('boss_' + keyword + '_jobinfos_' + time.strftime("%Y%m%d%H%M%S") + '.xlsx'), data_json_list=ret_jobinfos)
 
     def get_jobs_detail_by_securityid_jobid(self, securityid, jobid, lid):
         """实时获取详细职位信息(需要和上面的get_joblist()/search_job(keyword)函数配合使用)"""
@@ -242,4 +243,4 @@ class BossApi:
 
 if __name__ == '__main__':
     boss = BossApi()
-    boss.search_job_by_keyword('爬虫')  # search_job_by_keyword('python')  # get_joblist()  # get_jobs_detail_by_securityid_jobid
+    boss.search_job_by_keyword('嵌入式')  # search_job_by_keyword('python')  # get_joblist()  # get_jobs_detail_by_securityid_jobid
