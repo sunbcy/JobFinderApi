@@ -11,6 +11,18 @@ class BossApi:
     def __init__(self, host=api_host):
         self.host = host
 
+    def get_login_mpt(self):
+        """目前该接口部署起来只有大概24h的有效期，因为mpt无法长期有效，需要进一步研究测试才适合部署到服务器"""
+        api_url = f'http://{self.host}/wapi/zppassport/wxmp/login??code=0a3dQ40w3wLI913ug02w3Fvr990dQ40y&appId=10002appId=10002'
+        headers = {
+            'content-type': 'application/json',
+            'zpAppId': '10002',
+            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.31(0x18001f37) NetType/WIFI Language/zh_CN'
+        }  # mpt是授权的参数
+        r = requests.get(api_url, headers=headers)
+        mpt_code = json.loads(r.text).get('zpData').get('mpt')
+        return mpt_code
+
     def get_joblist(self):
         api_url = f'http://{self.host}/wapi/zpgeek/miniapp/homepage/recjoblist.json?cityCode=101280600&sortType=1&page=1&pageSize=15&districtCode=&salary=405&appId=10002'
         temp_ua = {"model": "iPhone SE (2nd generation)<iPhone12,8>", "platform": "ios"}
@@ -243,4 +255,6 @@ class BossApi:
 
 if __name__ == '__main__':
     boss = BossApi()
+    boss.get_login_mpt()
+    quit()
     boss.search_job_by_keyword('嵌入式')  # search_job_by_keyword('python')  # get_joblist()  # get_jobs_detail_by_securityid_jobid
